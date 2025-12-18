@@ -1,0 +1,1144 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+
+/* ========================================
+   CSS VARIABLES - TEMAS
+   ======================================== */
+:root {
+  /* Modo Claro (por defecto) */
+  --bg-gradient-1: #667eea;
+  --bg-gradient-2: #764ba2;
+  --bg-gradient-3: #f093fb;
+  
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(255, 255, 255, 0.3);
+  --card-shadow: rgba(31, 38, 135, 0.2);
+  
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  
+  --puzzle-bg: rgba(255, 255, 255, 0.95);
+  --puzzle-border: rgba(102, 126, 234, 0.3);
+  --square-bg: rgba(255, 255, 255, 0.9);
+  --square-hover: rgba(102, 126, 234, 0.15);
+  --square-text: #2d3748;
+  
+  --selected-bg: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  --selected-text: #744210;
+  --selected-shadow: rgba(253, 160, 133, 0.5);
+  
+  --found-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --found-text: #ffffff;
+  --found-shadow: rgba(102, 126, 234, 0.5);
+  
+  --solved-bg: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+  --solved-text: #ffffff;
+  
+  --complete-bg: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  --complete-text: #ffffff;
+  
+  --word-found-color: #a0aec0;
+  
+  --btn-primary-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: rgba(255, 255, 255, 0.9);
+  --btn-secondary-text: #667eea;
+  
+  --accent-glow: rgba(102, 126, 234, 0.4);
+}
+
+/* Modo Oscuro */
+[data-theme="dark"] {
+  --bg-gradient-1: #0f0c29;
+  --bg-gradient-2: #302b63;
+  --bg-gradient-3: #24243e;
+  
+  --card-bg: rgba(30, 30, 50, 0.85);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --card-shadow: rgba(0, 0, 0, 0.4);
+  
+  --text-primary: #f7fafc;
+  --text-secondary: #e2e8f0;
+  --text-muted: #a0aec0;
+  
+  --puzzle-bg: rgba(30, 30, 50, 0.95);
+  --puzzle-border: rgba(167, 139, 250, 0.3);
+  --square-bg: rgba(45, 45, 70, 0.9);
+  --square-hover: rgba(167, 139, 250, 0.2);
+  --square-text: #f7fafc;
+  
+  --selected-bg: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  --selected-text: #78350f;
+  --selected-shadow: rgba(251, 191, 36, 0.4);
+  
+  --found-bg: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+  --found-text: #ffffff;
+  --found-shadow: rgba(167, 139, 250, 0.5);
+  
+  --solved-bg: linear-gradient(135deg, #c084fc 0%, #a855f7 100%);
+  --solved-text: #ffffff;
+  
+  --complete-bg: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  --complete-text: #052e16;
+  
+  --word-found-color: #94a3b8;
+  
+  --btn-primary-bg: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: rgba(45, 45, 70, 0.9);
+  --btn-secondary-text: #a78bfa;
+  
+  --accent-glow: rgba(167, 139, 250, 0.4);
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body {
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 50%, var(--bg-gradient-3) 100%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  transition: background 0.5s ease;
+  padding: 15px;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Patrón de fondo */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* ========================================
+   HEADER & TÍTULO
+   ======================================== */
+.game-header {
+  margin-bottom: 25px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.header-text {
+  flex: 1;
+  text-align: center;
+}
+
+.game-title {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 4px 30px rgba(0,0,0,0.2);
+  letter-spacing: -1px;
+  margin-bottom: 5px;
+}
+
+.game-subtitle {
+  color: rgba(255,255,255,0.8);
+  font-size: clamp(0.8rem, 2vw, 1.1rem);
+  font-weight: 400;
+}
+
+/* ========================================
+   BOTÓN TEMA (CLARO/OSCURO)
+   ======================================== */
+.theme-toggle-btn {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 
+    0 4px 15px var(--card-shadow),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 20px;
+}
+
+.theme-toggle-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 
+    0 6px 20px var(--card-shadow),
+    0 0 15px var(--accent-glow);
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+.theme-toggle-btn .icon-sun,
+.theme-toggle-btn .icon-moon {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.theme-toggle-btn .icon-moon {
+  display: none;
+}
+
+[data-theme="dark"] .theme-toggle-btn .icon-sun {
+  display: none;
+}
+
+[data-theme="dark"] .theme-toggle-btn .icon-moon {
+  display: block;
+}
+
+/* ========================================
+   PANEL PRINCIPAL (GLASSMORPHISM)
+   ======================================== */
+.panel,
+.panel-default {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid var(--card-border);
+  box-shadow: 
+    0 8px 32px var(--card-shadow),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  overflow: hidden;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  max-width: 100%;
+  color: var(--text-primary);
+}
+
+.panel-heading {
+  background: transparent !important;
+  border-bottom: 1px solid var(--card-border) !important;
+  padding: 20px 25px !important;
+  color: var(--text-primary) !important;
+}
+
+.panel-heading h4,
+.panel-heading h4 strong,
+.panel-heading strong {
+  color: var(--text-primary) !important;
+  font-weight: 700;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.panel-body {
+  padding: 25px !important;
+  color: var(--text-primary) !important;
+}
+
+/* ========================================
+   ÁREA DEL PUZZLE
+   ======================================== */
+#juego {
+  background: var(--puzzle-bg);
+  border: 2px solid var(--puzzle-border);
+  border-radius: 20px;
+  padding: 15px;
+  margin: 0;
+  float: none;
+  display: inline-block;
+  box-shadow: 
+    0 4px 20px var(--card-shadow),
+    inset 0 2px 4px rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+#juego:hover {
+  box-shadow: 
+    0 8px 40px var(--card-shadow),
+    0 0 30px var(--accent-glow);
+}
+
+#juego div {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+/* ========================================
+   CELDAS DEL PUZZLE
+   ======================================== */
+#juego .puzzleSquare {
+  height: 36px;
+  width: 36px;
+  margin: 2px;
+  text-transform: uppercase;
+  background: var(--square-bg);
+  border: none;
+  border-radius: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--square-text);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#juego .puzzleSquare::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+#juego .puzzleSquare:hover {
+  background: var(--square-hover);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px var(--card-shadow);
+  z-index: 10;
+}
+
+#juego .puzzleSquare:active {
+  transform: scale(0.95);
+}
+
+button::-moz-focus-inner {
+  border: 0;
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Estado: Seleccionando */
+#juego .selected {
+  background: var(--selected-bg) !important;
+  color: var(--selected-text) !important;
+  transform: scale(1.15);
+  box-shadow: 0 4px 20px var(--selected-shadow);
+  animation: pulse 0.5s ease infinite alternate;
+}
+
+@keyframes pulse {
+  from { box-shadow: 0 4px 20px var(--selected-shadow); }
+  to { box-shadow: 0 6px 30px var(--selected-shadow); }
+}
+
+/* Estado: Palabra encontrada */
+#juego .found {
+  background: var(--found-bg) !important;
+  color: var(--found-text) !important;
+  box-shadow: 0 4px 15px var(--found-shadow);
+  animation: found-celebrate 0.5s ease;
+}
+
+@keyframes found-celebrate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2) rotate(5deg); }
+  100% { transform: scale(1); }
+}
+
+/* Estado: Resuelto automáticamente */
+#juego .solved {
+  background: var(--solved-bg) !important;
+  color: var(--solved-text) !important;
+  animation: solved-reveal 0.3s ease;
+}
+
+@keyframes solved-reveal {
+  from { 
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Estado: Juego completado */
+#juego .complete {
+  background: var(--complete-bg) !important;
+  color: var(--complete-text) !important;
+  animation: complete-party 1s ease infinite;
+}
+
+@keyframes complete-party {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* ========================================
+   LISTA DE PALABRAS
+   ======================================== */
+#Palabras {
+  padding: 10px 0;
+}
+
+#Palabras ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#Palabras li {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  padding: 12px 16px;
+  background: var(--square-bg);
+  border-radius: 10px;
+  border: 2px solid var(--puzzle-border);
+  transition: all 0.3s ease;
+  text-transform: capitalize;
+}
+
+#Palabras li:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 15px var(--card-shadow);
+}
+
+/* Palabra encontrada */
+#Palabras .wordFound {
+  text-decoration: line-through;
+  color: var(--word-found-color);
+  background: transparent;
+  border-style: dashed;
+  opacity: 0.7;
+}
+
+/* ========================================
+   BOTONES
+   ======================================== */
+.btn {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn-success {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-success:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+}
+
+.btn-info {
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+}
+
+.btn-info:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(6, 182, 212, 0.5);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(244, 63, 94, 0.4);
+}
+
+.btn-danger:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(244, 63, 94, 0.5);
+}
+
+.btn-lg {
+  padding: 16px 32px;
+  font-size: 1.1rem;
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ========================================
+   LAYOUT
+   ======================================== */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  max-width: 100%;
+}
+
+.col-md-3 {
+  flex: 0 0 25%;
+  max-width: 25%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.col-md-9 {
+  flex: 0 0 75%;
+  max-width: 75%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.col-md-2 {
+  flex: 0 0 20%;
+  max-width: 20%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.col-md-8 {
+  flex: 0 0 80%;
+  max-width: 80%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Game Layout */
+.game-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 30px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.game-layout .words-section {
+  flex: 0 0 auto;
+  min-width: 120px;
+  max-width: 200px;
+}
+
+.game-layout .puzzle-section {
+  flex: 0 1 auto;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.words-title {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--puzzle-border);
+  white-space: nowrap;
+}
+
+/* ========================================
+   RESPONSIVE BREAKPOINTS
+   ======================================== */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 768px) {
+  .col-md-3, .col-md-9,
+  .col-md-2, .col-md-8 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .game-layout {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .game-layout .words-section {
+    order: 2;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 15px;
+  }
+  
+  .game-layout .puzzle-section {
+    order: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .words-title {
+    text-align: center;
+  }
+  
+  #Palabras ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  #Palabras li {
+    flex: 0 0 auto;
+  }
+}
+
+/* Móviles */
+@media (max-width: 576px) {
+  body {
+    padding: 10px;
+  }
+  
+  .container {
+    padding: 0;
+  }
+  
+  .game-header {
+    margin-bottom: 15px;
+  }
+  
+  .header-content {
+    gap: 10px;
+  }
+  
+  .game-title {
+    font-size: 1.4rem;
+  }
+  
+  .game-subtitle {
+    font-size: 0.8rem;
+  }
+  
+  .theme-toggle-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+  
+  .panel, .panel-default {
+    border-radius: 14px;
+    margin-bottom: 12px;
+  }
+  
+  .panel-heading {
+    padding: 12px !important;
+  }
+  
+  .panel-heading h4 {
+    font-size: 0.95rem !important;
+  }
+  
+  .panel-body {
+    padding: 12px !important;
+  }
+  
+  #juego {
+    padding: 8px;
+    border-radius: 12px;
+  }
+  
+  #juego .puzzleSquare {
+    height: 26px;
+    width: 26px;
+    font-size: 0.75rem;
+    margin: 1px;
+    border-radius: 5px;
+  }
+  
+  .btn {
+    padding: 10px 14px;
+    font-size: 0.8rem;
+    border-radius: 10px;
+  }
+  
+  .btn-lg {
+    padding: 12px 18px;
+    font-size: 0.85rem;
+  }
+  
+  .words-title {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+  }
+  
+  #Palabras li {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    border-radius: 8px;
+  }
+  
+  .tagit {
+    padding: 8px 10px !important;
+    border-radius: 10px !important;
+  }
+  
+  .tagit li.tagit-choice {
+    padding: 5px 8px 5px 10px !important;
+    font-size: 0.8rem !important;
+    border-radius: 14px !important;
+  }
+}
+
+/* Móviles muy pequeños */
+@media (max-width: 380px) {
+  body {
+    padding: 8px;
+  }
+  
+  .game-title {
+    font-size: 1.2rem;
+  }
+  
+  .game-subtitle {
+    font-size: 0.7rem;
+  }
+  
+  .theme-toggle-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+  
+  #juego {
+    padding: 5px;
+  }
+  
+  #juego .puzzleSquare {
+    height: 22px;
+    width: 22px;
+    font-size: 0.65rem;
+    margin: 1px;
+    border-radius: 4px;
+  }
+  
+  .btn {
+    padding: 8px 10px;
+    font-size: 0.75rem;
+  }
+  
+  .btn-lg {
+    padding: 10px 14px;
+    font-size: 0.8rem;
+  }
+  
+  #Palabras li {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Ajustes para landscape en móviles */
+@media (max-height: 500px) and (orientation: landscape) {
+  .game-header {
+    margin-bottom: 8px;
+  }
+  
+  .game-title {
+    font-size: 1.1rem;
+  }
+  
+  .game-subtitle {
+    display: none;
+  }
+  
+  .theme-toggle-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+  
+  .panel-body {
+    padding: 8px !important;
+  }
+  
+  .game-layout {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  
+  .game-layout .words-section {
+    order: 1;
+    margin-top: 0;
+    max-width: 120px;
+    min-width: 100px;
+  }
+  
+  #juego .puzzleSquare {
+    height: 20px;
+    width: 20px;
+    font-size: 0.6rem;
+  }
+  
+  #Palabras li {
+    padding: 5px 8px;
+    font-size: 0.75rem;
+  }
+}
+
+/* ========================================
+   TAGS INPUT MODERNIZADO
+   ======================================== */
+.tagit {
+  background: var(--card-bg) !important;
+  border: 2px solid var(--puzzle-border) !important;
+  border-radius: 14px !important;
+  padding: 10px 15px !important;
+  min-height: 50px;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  align-items: center !important;
+}
+
+.tagit li {
+  float: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+}
+
+.tagit li.tagit-choice {
+  background: var(--btn-primary-bg) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 20px !important;
+  padding: 8px 12px 8px 14px !important;
+  font-family: 'Nunito', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+  transition: all 0.2s ease !important;
+}
+
+.tagit li.tagit-choice:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4) !important;
+}
+
+.tagit li.tagit-choice .tagit-label {
+  background: transparent !important;
+  color: white !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.tagit li.tagit-choice .tagit-close {
+  position: relative !important;
+  right: auto !important;
+  top: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  opacity: 0.8 !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.tagit li.tagit-choice .tagit-close:hover {
+  opacity: 1 !important;
+}
+
+.tagit li.tagit-choice .tagit-close .ui-icon,
+.tagit li.tagit-choice .tagit-close .text-icon {
+  display: none !important;
+}
+
+.tagit li.tagit-choice .tagit-close::after {
+  content: '✕' !important;
+  display: inline-block !important;
+  font-size: 0.85rem !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: bold !important;
+  width: 18px !important;
+  height: 18px !important;
+  line-height: 18px !important;
+  text-align: center !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 50% !important;
+  transition: background 0.2s ease !important;
+}
+
+.tagit li.tagit-choice .tagit-close:hover::after {
+  background: rgba(255, 255, 255, 0.35) !important;
+}
+
+.tagit li.tagit-new {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.tagit li.tagit-new input {
+  font-family: 'Nunito', sans-serif !important;
+  font-size: 1rem !important;
+  color: var(--text-primary) !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  padding: 8px 4px !important;
+  min-width: 120px !important;
+}
+
+.tagit li.tagit-new input::placeholder {
+  color: var(--text-muted) !important;
+}
+
+/* Tema oscuro para tags */
+[data-theme="dark"] .tagit li.tagit-choice {
+  background: var(--btn-primary-bg) !important;
+  box-shadow: 0 2px 8px rgba(167, 139, 250, 0.3) !important;
+}
+
+[data-theme="dark"] .tagit li.tagit-choice:hover {
+  box-shadow: 0 4px 12px rgba(167, 139, 250, 0.4) !important;
+}
+
+/* ========================================
+   ANIMACIONES DE ENTRADA
+   ======================================== */
+.panel {
+  animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#juego {
+  animation: scaleIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+@media print {
+  .ocultar,
+  .theme-toggle-btn {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    padding: 20px;
+  }
+  
+  body::before {
+    display: none;
+  }
+  
+  .game-header {
+    margin-bottom: 20px;
+  }
+  
+  .header-content {
+    justify-content: center;
+  }
+  
+  .header-text {
+    text-align: center;
+  }
+  
+  .game-title {
+    color: #333 !important;
+    -webkit-text-fill-color: #333 !important;
+    font-size: 2rem;
+  }
+  
+  .game-subtitle {
+    color: #666 !important;
+  }
+  
+  .panel, .panel-default, #juego {
+    background: white !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+  
+  .game-layout {
+    justify-content: flex-start;
+    gap: 30px;
+  }
+  
+  .words-title {
+    color: #333 !important;
+  }
+  
+  #juego .puzzleSquare {
+    border: 1px solid #ddd;
+    background: white !important;
+    color: #333 !important;
+  }
+  
+  #Palabras li {
+    background: #f5f5f5 !important;
+    color: #333 !important;
+    border: 1px solid #ddd !important;
+  }
+  
+  .col-md-2 {
+    width: 25%;
+    float: left;
+  }
+  
+  .col-md-8 {
+    width: 75%;
+    float: left;
+  }
+}
+
+/* ========================================
+   UTILIDADES
+   ======================================== */
+/* .ocultar NO se oculta en pantalla, solo al imprimir (ver @media print) */
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.panel-heading,
+.panel-heading h4,
+.panel-heading h3,
+.panel-heading h2,
+.panel-heading h1 {
+  color: var(--text-primary) !important;
+}
+
+/* Texto general dentro de panel */
+.panel,
+.panel-body,
+.panel-body p,
+.panel-body h4,
+.panel-body h5,
+.panel-body h6,
+.panel-body span,
+.panel-body div {
+  color: var(--text-primary);
+}
+
+/* Título "Palabras a encontrar" */
+.words-title {
+  color: var(--text-primary) !important;
+}

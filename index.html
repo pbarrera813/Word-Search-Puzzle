@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <title>Sopa de Letras</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="jquery-ui.css">
+  <link href="jquery.tagit.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="jquery.min.js"></script> 
+  <script type="text/javascript" src="wordfind.js"></script> 
+  <script type="text/javascript" src="wordfindgame.js"></script> 
+  <script type="text/javascript" src="bootstrap.min.js"></script>
+  <script type="text/javascript" src="jquery-ui.min.js"></script>
+  <script type="text/javascript" src="tag-it.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+  <header class="game-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="game-title">Sopa de Letras</h1>
+        <p class="game-subtitle">Encuentra todas las palabras ocultas</p>
+      </div>
+      <button class="theme-toggle-btn" onclick="toggleTheme()" title="Cambiar tema">
+        <span class="icon-sun">☀️</span>
+        <span class="icon-moon">🌙</span>
+      </button>
+    </div>
+  </header>
+
+  <script type="text/javascript">
+    var mytag;
+    $(document).ready(function () {
+      mytag = $("#myTags").tagit({});
+      Crear();
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    });
+    
+    // Función tema claro u oscuro
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    }
+  </script>
+  <div class="row ocultar text-center">
+    <div class="panel panel-default" style="width: 100%;">
+      <div class="panel-heading">
+        <h4>Ingresa las palabras para la sopa de letras</h4>
+      </div>
+      <div class="panel-body">
+        <ul id="myTags">
+          <li>Mama</li>
+          <li>Papa</li>
+          <li>Hijo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="ocultar">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <ins class="adsbygoogle"
+           style="display:inline-block;width:728px;height:90px"
+           data-ad-client="ca-pub-4331617637495482"
+           data-ad-slot="2764029251"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      <br/><br/>
+    </div>
+
+    <div class="row" style="width: 100%;">
+      <div class="panel panel-default" style="width: 100%;">
+        <div class="panel-heading ocultar">
+          <h4>Selecciona entre Crear, Imprimir o Resolver</h4>
+        </div>
+        <div class="panel-body">
+          
+          <div class="ocultar mb-3" style="margin-bottom: 25px;">
+            <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;">
+              <button onclick="Crear();" class="btn btn-success btn-lg">
+                Crear Juego
+              </button>
+              <button onclick="window.print();" class="btn btn-info btn-lg">
+                Imprimir
+              </button>
+              <button id='solve' class="btn btn-danger btn-lg">
+                Resolver
+              </button>
+            </div>
+          </div>
+          <div class="game-layout">
+            <div class="words-section">
+              <h4 class="words-title">Palabras a encontrar</h4>
+              <div id='Palabras'></div>
+            </div>
+            <div class="puzzle-section">
+              <div id='juego'></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <script>
+      var words = [];
+      var gamePuzzle;
+      
+      function Crear() {
+        datos = mytag[0].textContent.trim().split("×");
+        
+        for (i = 0; i < (datos.length)-1; i++) {
+          words.push(datos[i]);
+        }
+        
+        $('#Juegos').show();
+        gamePuzzle = wordfindgame.create(datos, '#juego', '#Palabras');
+        var puzzle = wordfind.newPuzzle(datos, { height: 18, width: 18, fillBlanks: false });
+        wordfind.print(puzzle);   
+      }
+      
+      $('#solve').click(function() {
+        wordfindgame.solve(gamePuzzle, words);
+      });
+    </script>
+  </div>
+</div>
+</body>
+</html>
