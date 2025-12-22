@@ -1311,3 +1311,8 @@ button:focus {
 .custom-alert button:hover {
   opacity: 0.8;
 }
+
+.input-blocked {
+  pointer-events: none;
+  opacity: 0.6;
+}

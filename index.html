@@ -41,20 +41,38 @@
       const savedTheme = localStorage.getItem('theme') || 'light';
       document.documentElement.setAttribute('data-theme', savedTheme);
     });
+
+    const MIN_LETRAS = 4;
+    const MAX_LETRAS = 17;
+
+    function mostrarAviso(mensaje){
+      $("#alertMessage").text(mensaje);
+      $("#wordLimitAlert").addClass("show");
+      // Bloquear nuevas palabras
+      $(".tagit-new input").addClass("input-blocked").prop("disabled", true);
+    }
+
+    function cerrarAviso() {
+    $("#wordLimitAlert").removeClass("show");
+    // Reactiva escribir
+    $(".tagit-new input")
+      .removeClass("input-blocked")
+      .prop("disabled", false)
+      .focus();
+    }
     
     // Función tema claro u oscuro
     function toggleTheme() {
       const html = document.documentElement;
       const currentTheme = html.getAttribute('data-theme');
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      
       html.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
     }
   </script>
   <div id="wordLimitAlert" class="custom-alert">
       <span class="close-alert">&times;</span>
-        <p>Palabra demasiado larga.</p>
+        <p id="alertMessage"></p>
       <button id="alertAccept">Aceptar</button>
     </div>
       <div class="panel-body">
@@ -133,18 +151,21 @@
         $(document).ready(function () {
         $("#myTags").tagit({
         afterTagAdded: function (event, ui) {
-            if (ui.tagLabel.length > 18) {
-        $("#myTags").tagit("removeTagByLabel", ui.tagLabel);
-        $("#wordLimitAlert")
-          .removeClass("show") // reinicia animación
-          .addClass("show");
-                }
-              }
-          });
-        $("#alertAccept, .close-alert").on("click", function () {
-        $("#wordLimitAlert").removeClass("show");
+        const longitud = ui.tagLabel.length;
+          if (longitud < MIN_LETRAS) {
+          $("#myTags").tagit("removeTagByLabel", ui.tagLabel);
+          mostrarAviso("Palabra demasiado corta");
+            return;
+          }
+          if (longitud > MAX_LETRAS) {
+            $("#myTags").tagit("removeTagByLabel", ui.tagLabel);
+            mostrarAviso("Palabra demasiado larga.");
+            return;
+          }
+        }
       });
-    });
+    $("#alertAccept, .close-alert").on("click", cerrarAviso);
+  });
     </script>
   </div>
 
@@ -166,11 +187,5 @@
 </div>
 
 <script src="navigation.js"></script>
-
-  <div id="wordLimitAlert" class="custom-alert hidden">
-    <span class="close-alert">&times;</span>
-      <p>Palabra demasiado larga, intenta nuevamente.</p>
-    <button id="alertAccept">Aceptar</button>
-  </div>
 </body>
 </html>
