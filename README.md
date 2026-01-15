@@ -1,4 +1,4 @@
-#Word Search-EN
+# Word Search-EN
 
 Word search/puzzle written in HTML, CSS and JS.
 wordfind.js, wordfindgame.js and tag-it.js obtained from:
