@@ -44,6 +44,8 @@
 
     const MIN_LETRAS = 4;
     const MAX_LETRAS = 17;
+    const MIN_PALABRAS = 3;
+    const MAX_PALABRAS = 20;
 
     function mostrarAviso(mensaje){
       $("#alertMessage").text(mensaje);
@@ -75,7 +77,7 @@
         <p id="alertMessage"></p>
       <button id="alertAccept">Aceptar</button>
     </div>
-      <div class="panel-body">
+      <div class="panel-body ocultar">
         <ul id="myTags">
           <li>Mama</li>
           <li>Papa</li>
@@ -136,16 +138,21 @@
       var gamePuzzle;
       
       function Crear() {
-        datos = mytag[0].textContent.trim().split("×");
-        
-        for (i = 0; i < (datos.length)-1; i++) {
+        datos = mytag[0].textContent.trim().split("×").filter(function(w) { return w.trim() !== ''; });
+
+        if (datos.length < MIN_PALABRAS) {
+          mostrarAviso("Se deben introducir minimo 3 palabras para generar.");
+          return;
+        }
+
+        for (i = 0; i < datos.length; i++) {
           words.push(datos[i]);
         }
-        
+
         $('#Juegos').show();
         gamePuzzle = wordfindgame.create(datos, '#juego', '#Palabras');
         var puzzle = wordfind.newPuzzle(datos, { height: 18, width: 18, fillBlanks: false });
-        wordfind.print(puzzle);   
+        wordfind.print(puzzle);
       }
 
         $(document).ready(function () {
@@ -160,6 +167,12 @@
           if (longitud > MAX_LETRAS) {
             $("#myTags").tagit("removeTagByLabel", ui.tagLabel);
             mostrarAviso("Palabra demasiado larga.");
+            return;
+          }
+          var totalTags = $("#myTags").tagit("assignedTags").length;
+          if (totalTags > MAX_PALABRAS) {
+            $("#myTags").tagit("removeTagByLabel", ui.tagLabel);
+            mostrarAviso("Solo se permiten 20 palabras maximo.");
             return;
           }
         }
