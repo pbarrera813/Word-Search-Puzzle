@@ -178,8 +178,44 @@
         }
       });
     $("#alertAccept, .close-alert").on("click", cerrarAviso);
+
+    $('#solve').on('click', function() {
+      if (gamePuzzle) {
+        wordfindgame.solve(gamePuzzle, datos);
+      }
+    });
+
+    $(document).on('puzzleComplete', function() {
+      showFireworks();
+    });
   });
+
+    function showFireworks() {
+      document.getElementById('fireworksOverlay').classList.add('show');
+    }
+
+    function closeFireworks() {
+      document.getElementById('fireworksOverlay').classList.remove('show');
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeFireworks();
+      }
+    });
     </script>
+  </div>
+
+  <!-- Celebración de juego completado -->
+  <div id="fireworksOverlay" class="fireworks-overlay" onclick="if(event.target===this)closeFireworks()">
+    <div class="fireworks-content">
+      <div class="fireworks-popup">
+        <span class="close-alert" onclick="closeFireworks()">&times;</span>
+        <p>¡Bien hecho!</p>
+        <button onclick="closeFireworks()">Aceptar</button>
+      </div>
+      <img src="images/fireworks.gif" alt="" class="fireworks-bg">
+    </div>
   </div>
 
   <!-- Navegación a otros juegos/páginas -->

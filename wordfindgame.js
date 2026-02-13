@@ -180,8 +180,10 @@
       // Soportar tanto evento nativo como jQuery
       var touches = e.touches || (e.originalEvent && e.originalEvent.touches);
       if (touches && touches[0]) {
-        var xPos = touches[0].pageX;
-        var yPos = touches[0].pageY;
+        // elementFromPoint requires viewport coordinates (clientX/clientY),
+        // not page coordinates (pageX/pageY) which include scroll offset
+        var xPos = touches[0].clientX;
+        var yPos = touches[0].clientY;
         var targetElement = document.elementFromPoint(xPos, yPos);
         select(targetElement);
       }
@@ -231,7 +233,7 @@
         }
 
         if (wordList.length === 0) {
-          $('.puzzleSquare').addClass('complete');
+          $(document).trigger('puzzleComplete');
         }
       }
 
@@ -306,6 +308,13 @@
             this.addEventListener('touchmove', touchMove, { passive: false });
             this.addEventListener('touchend', endTurn, { passive: false });
           });
+
+          // Prevent page scrolling when touching anywhere inside the puzzle
+          // (gaps between squares, container padding, row divs)
+          var puzzleContainer = $(puzzleEl)[0];
+          puzzleContainer.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+          }, { passive: false });
         }
 
         return puzzle;
@@ -338,6 +347,7 @@
           }
         }
 
+        wordList = [];
       }
     };
   };
